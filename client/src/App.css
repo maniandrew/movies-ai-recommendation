@@ -1,0 +1,29 @@
+:root {
+  /* Colors */
+  --primary: #10B981;    /* Emerald Green */
+  --secondary: #111827;  /* Charcoal Black */
+  --accent: #22D3EE;     /* Optional: Cyan for highlights */
+  --background: #0F172A; /* Optional: Very dark background */
+  --text-light: #F9FAFB; /* Optional: Light text on dark backgrounds */
+
+  /* Fonts */
+  --font-family: 'Segoe UI', sans-serif;
+
+  /* Spacing (Optional) */
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 2rem;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--primary);
+  color: var(--text-light);
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3 {
+  color: var(--secondary);
+}
+
