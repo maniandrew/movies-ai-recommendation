@@ -1,0 +1,42 @@
+:root {
+  /* Colors */
+  --primary: #045fcb;    /* Emerald Green */
+  --secondary: #ffffff;  /* Charcoal Black */
+  --background: #2e445a; /* Optional: Very dark background */
+  --text-dark: #343434; /* Optional: Light text on dark backgrounds */
+  --text-light: #ffffff;
+  --text-label:#bababa;
+  /* Fonts */
+  --font-family: 'Segoe UI', sans-serif;
+
+  /* Spacing (Optional) */
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 2rem;
+}
+
+body {
+  font-family: var(--font-family);
+  background:#2e445a;
+  color: var(--text-dark);
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3 {
+  color: var(--text-light);
+}
+
+
+p {
+  color: var(--text-light)
+}
+
+label {
+  color: var(--text-label)
+}
+
+
+* {
+  box-sizing: border-box;
+}
