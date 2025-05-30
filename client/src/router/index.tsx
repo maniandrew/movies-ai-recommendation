@@ -1,10 +1,10 @@
 // src/router/index.tsx
 import React, { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Loader from '../components/Loader';
+import Loader from '../components/loader/Loader';
 
-const Home = lazy(() => import('../pages/Home'));
-const Register = lazy(() => import('../pages/Register'));
+const Home = lazy(() => import('../components/welcome/Home'));
+const Register = lazy(() => import('../components/register/Register'));
 
 const AppRouter: React.FC = () => {
   return (
