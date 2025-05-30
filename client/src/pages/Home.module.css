@@ -1,0 +1,25 @@
+.welcomeContainer {
+    margin: 1rem auto;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 20px;
+}
+
+.welcomeContentContainer {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+}
+
+.actionButtons {
+    display: flex;
+    gap: 30px;
+}
+
+
+.homeImgContainer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
