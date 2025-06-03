@@ -1,10 +1,6 @@
 from app.core.config import db;
-import requests
-from io import BytesIO
-from PIL import Image
-import numpy as np
-import face_recognition
-
+from datetime import datetime
+from uuid import uuid4
 
 
 collection = db['users'] # type: ignore
@@ -20,36 +16,30 @@ async def get_all_users():
         users.append(doc)
     return users
 
-
-async def update_users():
-    response =  requests.get(api_url)
-    data =  response.json()
+async def create_user(encodings: list , name: str):
+    try:
+        face_encoding = encodings.tolist()
+        # Get today's date in YYYYMMDD format
+        date_str = datetime.now().strftime('%Y%m%d')
+        email = f"{date_str}_{uuid4().hex[:6]}@gmail.com"
+        collection.insert_one(
+            {
+            "email": email,
+            "name": name,
+            "face_encodings": [face_encoding]
+            },
+        )
+        return True
+    except Exception as e:
+        return False
     
-    for user_info in data['results']:
-      name = f"{user_info['name']['first']} {user_info['name']['last']}"
-      email = user_info['email']
-      image_url = user_info['picture']['large']
-      img_response = requests.get(image_url)
-      img_bytes = BytesIO(img_response.content)
-      pil_image = Image.open(img_bytes).convert('RGB')
-      img_np = np.array(pil_image)
-      encodings = face_recognition.face_encodings(img_np)
-      if len(encodings) == 0:
-       print(f"No face found for user {name}, skipping...")
-       continue
-      face_encoding = encodings[0].tolist()
-      collection.update_one(
-        {"email": email},
-        {
-            "$set": {
-                "name": name,
-                "email": email,
-                "face_encodings": [face_encoding]
-            }
-        },
-        upsert=True
-    )
-    return data['results']
+async def get_user_details(name: str) -> list:
+    users = await collection.find({'name': name, 'face_encodings': {'$exists': True}}).to_list(length = 10)
+    if not users:
+        return None
+    return users
+    
+    
 
         
     

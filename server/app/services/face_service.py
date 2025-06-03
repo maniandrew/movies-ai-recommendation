@@ -1,35 +1,37 @@
-import face_recognition
-import numpy as np
-from PIL import Image
-import io
-from fastapi import HTTPException
-from app.core.config import db
+from app.models.users import (
+    create_user,
+    get_user_details
+)
+from app.utils.face_utils import (
+    extract_face_encoding ,
+    authenticate_by_users_face , 
+)
 
-collection = db['users']
+async def face_unlock_register(img_bytes: bytes, name: str) -> dict:
+    if not name:
+        return {'message': 'User Name is Required', 'status_code': 400}
 
-def read_image_from_bytes(image_bytes):
-    image = Image.open(io.BytesIO(image_bytes))
-    return np.array(image)
+    encoding = extract_face_encoding(img_bytes)
+    if encoding is None:
+        return {'message': 'We are not able to recognize your face', 'status_code': 400}
 
-async def face_unlock(img_bytes):
-    try:
-        img_array = read_image_from_bytes(img_bytes)
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Invalid image data: {str(e)}")
+    isUserCreated = await create_user(encoding, name)
+    if not isUserCreated:
+        return {'message': 'User creation failed', 'status_code': 400}
 
-    unknown_encodings = face_recognition.face_encodings(img_array)
-    if not unknown_encodings:
-        raise HTTPException(400, detail="No Face Detected")
+    return {'message': 'User successfully registered', 'status_code': 200}
 
-    unknown_encoding = unknown_encodings[0]
 
-    all_users = await collection.find({'face_encodings': {'$exists': True}}).to_list(length=500)
-
-    for user in all_users:
-        known_encoding = np.array(user['face_encodings'])
-        matches = face_recognition.compare_faces([known_encoding], unknown_encoding)
-        if np.any(matches):
-            user['_id'] = str(user['_id'])
-            return {'message': "Successfully Authenticated", 'user': user}
-
-    raise HTTPException(status_code=404, detail="No matching face found.")
+async def face_lock_validation(img_bytes: bytes, name: str) -> dict:
+    if not name:
+        return {'message': 'User Name is Required', 'status_code': 400}
+    all_users = await get_user_details(name)
+    if not all_users:
+        return {'message': 'Unauthenticated. Please register your face.', 'status_code': 400}
+    encoding = extract_face_encoding(img_bytes)
+    if encoding is None:
+        return {'message': 'We are not able to recognize your face', 'status_code': 400}
+    is_authenticated =  authenticate_by_users_face(all_users , encoding)
+    if not is_authenticated:
+        return {'message': 'Unauthenticated. Please register your face.', 'status_code': 400}
+    return {'message': 'Successfully Authenticated', 'status_code': 200}

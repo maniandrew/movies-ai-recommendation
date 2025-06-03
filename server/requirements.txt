@@ -24,3 +24,4 @@ python-multipart
 motor
 opencv-python
 requests
+fastapi[all]
