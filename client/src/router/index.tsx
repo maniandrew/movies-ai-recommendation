@@ -2,6 +2,7 @@
 import React, { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Loader from '../components/loader/Loader';
+import FaceScanner from '../pages/faceScanner/FaceScanner';
 
 const Home = lazy(() => import('../components/welcome/Home'));
 const Register = lazy(() => import('../components/register/Register'));
@@ -12,6 +13,7 @@ const AppRouter: React.FC = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/face-scanner" element={<FaceScanner />} />
       </Routes>
     </Suspense>
   );

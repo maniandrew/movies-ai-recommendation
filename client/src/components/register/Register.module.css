@@ -10,8 +10,69 @@
     justify-content: flex-end;
 }
 
-.registrationContentSection {
+.registrationActionSection {
     display: flex;
     flex-direction: column;
     margin:40px auto;
+}
+
+.dottedSection{
+    display: flex;
+    flex-direction: column;
+    margin: 20px auto;
+    border: 2px dotted var(--text-label);
+    background: var(--card);
+    padding: 30px;
+    gap: 5px;
+}
+
+.uploadIconWrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.uploadIconSection {
+    margin-top:10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+}
+
+.uploadIconSection:hover {
+    background: var(--text-light);
+}
+
+.uploadIcon {
+    font-size: 20px;
+    color: var(--primary);
+}
+
+.errorMessage {
+    margin: 10px auto;
+    color: var(--primary);
+}
+
+.registrationDescription {
+    margin: 15px auto;
+}
+
+.contentIconsWrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.regCameraIcon {
+    font-size: 20px;
+    color: var(--primary);
+}
+
+.spanClickContainer{
+    font-size: 13px;
+    color: var(--primary);
 }

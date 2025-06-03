@@ -111,3 +111,18 @@ label {
 .secondary-button:hover::after {
   width: 100%;
 }
+
+
+input {
+  height: 50px;
+  width:100%;
+  outline: none;
+  border: 1px solid var(--secondary);
+  padding-left: 15px;
+}
+
+input::placeholder {
+  color: var(--background);
+  font-style: italic;
+  font-size: 14px;
+}

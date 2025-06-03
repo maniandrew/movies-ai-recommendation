@@ -1,0 +1,20 @@
+.faceScannerContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh
+}
+
+.cameraContainer {
+    display: flex;
+    justify-content: center;
+    gap:30px;
+}
+
+.cameraWrapper {
+    display: flex;
+    justify-content: center;
+    height: calc(100% - 30%);
+    width: calc(100% - 30%);
+}
