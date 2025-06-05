@@ -6,6 +6,8 @@ export type RegisterResponse = {
     status_code: number;
 };
 
+export type LoginResponse = RegisterResponse
+
 
 
 class RegisterService extends BaseClientService {
@@ -17,6 +19,11 @@ class RegisterService extends BaseClientService {
         const response = await this.post<RegisterResponse>('/register', formData , { headers:  { "Content-Type" : 'multipart/form-data'} });
         return response; // ✅ Only return the relevant data
     };
+
+    loginFace = async(formData: FormData): Promise<LoginResponse> => {
+        const response = await this.post<LoginResponse>('/login', formData , { headers: { 'Content-Type': 'multipart/form-data'}});
+        return response;
+    }
 
 }
 export default new RegisterService();

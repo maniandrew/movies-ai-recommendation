@@ -15,7 +15,11 @@ const FaceScanner: React.FC = () => {
     }
 
     const location = useLocation();
-    const userName = location.state?.userName;
+    const userName: string = location.state?.userName;
+    const isFaceScan: boolean = location.state?.isFaceScan;
+    const imageFile: File = location.state?.fileDetails;
+    const isLogin: boolean = location.state?.isLogin;
+
      
     return (
         <Container className={styles.faceScannerContainer}>
@@ -23,7 +27,13 @@ const FaceScanner: React.FC = () => {
                 <h3 className='primary'> { context } </h3>
             </Container>
             <Container className={styles.cameraWrapper}>
-                <WebCameraComponent onRegisterResult={handleContext} userName={userName}></WebCameraComponent>
+                <WebCameraComponent 
+                   isFaceScan={isFaceScan} 
+                   onRegisterResult={handleContext} 
+                   userName={userName}
+                   imageFile={imageFile}
+                   isLogin={isLogin}
+                ></WebCameraComponent>
             </Container>
         </Container>
     )

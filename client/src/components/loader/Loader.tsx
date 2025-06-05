@@ -1,12 +1,19 @@
 // src/components/Loader.tsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Loader.module.css';
 
-const Loader: React.FC = () => {
+type Props = {
+  customSize: number;
+}
+
+const Loader: React.FC<Props> = ({customSize}) => {
+  const [size , setSize] = useState<number>(50);
+  useEffect(() => {
+    setSize(customSize);
+  },[customSize])
   return (
     <div className={styles.customLoaderWrapper}>
-      <div className={styles.customSpinner}></div>
-      <p className={styles.customLoaderText}>Loading...</p>
+      <div className={styles.customSpinner} style={{height:size , width: size}}></div>
     </div>
   );
 };

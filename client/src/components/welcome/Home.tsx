@@ -12,6 +12,10 @@ const Home: React.FC = () => {
     const handleRegister = ():void => {
        navigate('/register');
     }
+
+    const handleLogin = (): void => {
+        navigate('/login')
+    }
     return (
         <Container className={styles.welcomeContainer}>
             <Row>
@@ -38,7 +42,7 @@ const Home: React.FC = () => {
                         </div>
                         <div className={styles.actionButtons}>
                             <button className="primary-button" onClick={handleRegister}>Register</button>
-                            <button className="secondary-button">Login</button>
+                            <button className="secondary-button" onClick={handleLogin}>Login</button>
                         </div>
                     </div>
                 </Col>

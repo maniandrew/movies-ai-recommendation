@@ -12,8 +12,13 @@
 
 .registrationActionSection {
     display: flex;
-    flex-direction: column;
     margin:40px auto;
+    gap: 30px;
+    flex-grow: 1;
+}
+
+.registrationActionSection button {
+    flex: 1;
 }
 
 .dottedSection{
@@ -28,11 +33,12 @@
 
 .uploadIconWrapper {
     display: flex;
+    align-items: center;
+    flex-direction: column-reverse;
     justify-content: center;
 }
 
 .uploadIconSection {
-    margin-top:10px;
     display: flex;
     justify-content: center;
     align-items: center;

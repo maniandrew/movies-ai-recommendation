@@ -2,7 +2,7 @@ from fastapi import APIRouter , UploadFile , File , Form
 from fastapi.responses import JSONResponse
 from app.services.face_service import face_lock_validation
 
-router = APIRouter(prefix="/unlock" , tags=['Unlock'])
+router = APIRouter(prefix="/login" , tags=['Unlock'])
 
 @router.post('/')
 async def face_unlock(file: UploadFile = File(...) , name: str = Form(...)):
