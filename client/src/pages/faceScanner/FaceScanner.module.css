@@ -9,12 +9,12 @@
 .cameraContainer {
     display: flex;
     justify-content: center;
+    align-items: center;
     gap:30px;
 }
 
 .cameraWrapper {
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    height: calc(100% - 30%);
-    width: calc(100% - 30%);
 }

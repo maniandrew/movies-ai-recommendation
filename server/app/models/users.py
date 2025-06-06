@@ -33,8 +33,8 @@ async def create_user(encodings: list , name: str):
     except Exception as e:
         return False
     
-async def get_user_details(name: str) -> list:
-    users = await collection.find({'name': name, 'face_encodings': {'$exists': True}}).to_list(length = 10)
+async def get_user_details() -> list:
+    users = await collection.find({'face_encodings': {'$exists': True}}).to_list(length = 10)
     if not users:
         return None
     return users

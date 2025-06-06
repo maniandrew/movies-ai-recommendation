@@ -10,14 +10,19 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
 
 
-const validationSchema = yup.object({
-    userName: yup.string().required('Username is required*')
-}).required();
-
+const getValidationSchema = (isLogin: boolean) => {
+    return yup.object(
+        isLogin
+            ? {} // No validation needed for userName
+            : {
+                userName: yup.string().required('Username is required*'),
+            }
+    );
+}
 
 
 type FormData = {
-    userName: string;
+    userName?: string;
 };
 
 const Actions = {
@@ -32,22 +37,22 @@ type Props = {
     isLogin: boolean
 }
 
-const Register: React.FC<Props> = ({ isLogin  }) => {
+const Register: React.FC<Props> = ({ isLogin }) => {
 
-    const registerTitle = <h3>Secure Login with  <span className='primary'> Your Face </span>  to Complete Registration.</h3>
-    const loginTitle = <h3> Login  With your <span className='primary'>face to complete Authentication </span> </h3>
+    const registerTitle = <h3>Secure with  <span className='primary'> your face </span>  to complete Registration</h3>
+    const loginTitle = <h3> Login with your <span className='primary'>face to complete Authentication </span> </h3>
     const [isFaceScan, setIsFaceScan] = useState<boolean>(true);
     const [readOnly, setReadOnly] = useState<boolean>(false);
     const [fileDetails, setFileDetails] = useState<File | null>(null);
     const [isFaceButtonDisabled, setFaceButtonDisabled] = useState<boolean>(false);
     const [imageBtnCtxt, setImageBtnCtxt] = useState<string>(Actions.UPLOAD_IMAGE);
     const [isFileNotFound, setFileNotFound] = useState<boolean>(false);
-
+    const validationSchema = getValidationSchema(isLogin);
 
     const TemplateTitle: React.FC = () => {
         return isLogin ? loginTitle : registerTitle
     }
-    
+
     const { register, handleSubmit, formState: { errors }, watch } = useForm<FormData>({
         resolver: yupResolver(validationSchema)
     });
@@ -61,7 +66,17 @@ const Register: React.FC<Props> = ({ isLogin  }) => {
     const onFaceScanSubmit = (formData: FormData) => {
         setFaceButtonDisabled(false);
         setIsFaceScan(true);
-        if (formData.userName) {
+        if(isLogin) {
+            navigate('/face-scanner', {
+                state: {
+                    userName: userName,
+                    isFaceScan,
+                    isLogin
+                }
+            });
+            return;
+        }
+        if (!isLogin && formData.userName) {
             navigate('/face-scanner', {
                 state: {
                     userName: userName,
@@ -74,11 +89,10 @@ const Register: React.FC<Props> = ({ isLogin  }) => {
 
 
     const onImageScanSubmit = (formData: FormData) => {
-        console.log(formData, 'data');
         setIsFaceScan(false);
         setFaceButtonDisabled(true)
         setImageBtnCtxt(Actions.IMAGE_SCAN);
-        if (formData.userName) {
+        if (formData.userName || isLogin) {
             if (imageBtnCtxt === Actions.IMAGE_SCAN) {
                 if (!fileDetails) {
                     setFileNotFound(true);
@@ -140,54 +154,55 @@ const Register: React.FC<Props> = ({ isLogin  }) => {
                                         Make sure the photo is <span className='primary'> front-facing and well-lit</span></p>
                                 </div>
                             </div>
-                            <div className={styles.dottedSection}>
-                                <div className={styles.nameContainer}>
-                                    <form>
+                            {
+                                <div className={styles.dottedSection}>
+                                   {!isLogin && <div className={styles.nameContainer}>
+                                        <form>
+                                            <input
+                                                {...register('userName')}
+                                                type='text'
+                                                placeholder='Enter Your Name'
+                                                readOnly={readOnly}
+                                            ></input>
+                                            {errors.userName && <p className={styles.errorMessage}>{errors.userName.message}</p>}
+                                        </form>
+                                    </div>}
+                                    {(isLogin || isNameValid) && !isFaceScan &&   <div className={styles.uploadIconWrapper}>
                                         <input
-                                            {...register('userName')}
-                                            type='text'
-                                            placeholder='Enter Your Name'
-                                            readOnly={readOnly}
-                                        ></input>
-                                        {errors.userName && <p className={styles.errorMessage}>{errors.userName.message}</p>}
-                                    </form>
-                                </div>
-                                {isNameValid && !isFaceScan && <div className={styles.uploadIconWrapper}>
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        ref={fileInputRef}
-                                        style={{ display: 'none' }}
-                                        onChange={handleImageProcess}
-                                    />
-                                    <div className={styles.uploadIconSection} onClick={handleIconClick}>
-                                        <FaUpload className={styles.uploadIcon} />
+                                            type="file"
+                                            accept="image/*"
+                                            ref={fileInputRef}
+                                            style={{ display: 'none' }}
+                                            onChange={handleImageProcess}
+                                        />
+                                        <div className={styles.uploadIconSection} onClick={handleIconClick}>
+                                            <FaUpload className={styles.uploadIcon} />
+                                        </div>
+                                        <div style={{ marginTop: '5px', alignSelf: 'flex-start' }}>
+                                            {isFileNotFound ? <p className='primary'>Please upload the image file*</p> : null}
+                                        </div>
+                                    </div>}
+                                    <div className={styles.uploadContent}>
+                                        <React.Fragment>
+                                            {
+                                                isNameValid && !fileDetails && !isFaceScan && (
+                                                    <React.Fragment>
+                                                        <p>Click to upload your profile picture</p>
+                                                        <p>Supported Format: <span className={styles.spanClickContainer}>
+                                                            PNG, JPG, or JPEG
+                                                        </span>
+                                                        </p>
+                                                    </React.Fragment>
+                                                )
+                                            }
+                                            {fileDetails && (
+                                                <p>Selected file: <span className='primary'> {fileDetails.name}</span></p>
+                                            )}
+                                        </React.Fragment>
                                     </div>
-                                    <div style={{ marginTop: '5px', alignSelf: 'flex-start' }}>
-                                        {isFileNotFound ? <p className='primary'>Please upload the image file*</p> : null}
-                                    </div>
-                                </div>}
-                                <div className={styles.uploadContent}>
-                                    <React.Fragment>
-                                        {
-                                            isNameValid && !fileDetails && !isFaceScan && (
-                                                <React.Fragment>
-                                                    <p>Click to upload your profile picture</p>
-                                                    <p>Supported Format: <span className={styles.spanClickContainer}>
-                                                        PNG, JPG, or JPEG
-                                                    </span>
-                                                    </p>
-                                                </React.Fragment>
-                                            )
-                                        }
-                                        {fileDetails && (
-                                            <p>Selected file: <span className='primary'> {fileDetails.name}</span></p>
-                                        )}
-
-
-                                    </React.Fragment>
                                 </div>
-                            </div>
+                            }
+
                         </div>
                         <div className={styles.registrationActionSection}>
                             <button className="primary-button" onClick={handleSubmit(onFaceScanSubmit)} hidden={isFaceButtonDisabled}>

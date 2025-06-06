@@ -5,13 +5,14 @@ from app.services.face_service import face_lock_validation
 router = APIRouter(prefix="/login" , tags=['Unlock'])
 
 @router.post('/')
-async def face_unlock(file: UploadFile = File(...) , name: str = Form(...)):
+async def face_unlock(file: UploadFile = File(...)):
     contents = await file.read()
-    result = await face_lock_validation(contents , name)
-    return JSONResponse(
-        content={
-            'message': result['message'],
-            'status_code': result['status_code']
-        },
-        status_code = result['status_code']
-    )
+    result = await face_lock_validation(contents)
+    if result['status_code'] != 200:
+        return JSONResponse(content={"message": result["message"]}, status_code=result["status_code"])
+
+    return {
+        "message": result["message"],
+        "user": result["user"],
+        "status_code": result["status_code"]
+    }

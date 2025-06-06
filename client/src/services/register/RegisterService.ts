@@ -4,6 +4,7 @@ import BaseClientService from '../base/BaseClientService';
 export type RegisterResponse = {
     message: string;
     status_code: number;
+    user?:Array<unknown>
 };
 
 export type LoginResponse = RegisterResponse

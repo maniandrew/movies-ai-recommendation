@@ -1,0 +1,36 @@
+.errorContainer {
+  text-align: center;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.errorImage {
+  max-width: 200px;
+  margin-bottom: 1rem;
+}
+
+.errorText {
+  color: var(--primary);
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.retryCount {
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+
+.actionContainer {
+  display: flex;
+  width: 100%;
+  gap: 20px;
+}
+
+.actionContainer button {
+  flex: 1;
+}

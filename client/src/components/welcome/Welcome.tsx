@@ -1,11 +1,11 @@
 import React from 'react';
 import { Row, Col, Container, Image } from 'react-bootstrap';
-import styles from './Home.module.css'
+import styles from './Welcome.module.css'
 import homeImg from '../../assets/images/home.png';
 import { useNavigate  } from 'react-router-dom';
 
 
-const Home: React.FC = () => {
+const Welcome: React.FC = () => {
 
     const navigate = useNavigate();
 
@@ -61,4 +61,4 @@ const Home: React.FC = () => {
     )
 }
 
-export default Home;
+export default Welcome;

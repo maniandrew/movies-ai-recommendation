@@ -2,6 +2,7 @@ import face_recognition;
 from PIL import Image;
 import numpy as np;
 import io;
+from app.utils.common_utils import convert_object_id
 
 def extract_face_encoding(img_bytes: bytes):
     try:
@@ -19,7 +20,7 @@ def read_image_from_bytes(image_bytes):
     return np.array(image)
 
 
-def authenticate_by_users_face(all_users: list, encoding: list) -> bool:
+def authenticate_by_users_face(all_users: list, encoding: list) -> list:
     encoding = np.array(encoding)  # Ensure encoding is a NumPy array
 
     for user in all_users:
@@ -31,5 +32,6 @@ def authenticate_by_users_face(all_users: list, encoding: list) -> bool:
         else:
             matches = face_recognition.compare_faces([known_encoding], encoding)
         if np.any(matches):
-            return True
-    return False
+            user_data = convert_object_id(user)
+            return user_data
+    return None
