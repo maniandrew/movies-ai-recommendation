@@ -179,6 +179,7 @@ const WebCameraComponent: React.FC<Props> = (
     return () => {
       if (isFaceScan) stopStream();
     };
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleRetry = async () => {
