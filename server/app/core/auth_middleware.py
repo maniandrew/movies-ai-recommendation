@@ -22,8 +22,6 @@ class AuthMiddleware(BaseHTTPMiddleware):
         
         tokenDetails = self.auth_service.decode_token(token)
         
-        print(tokenDetails)
-        
         if tokenDetails.is_expired:
             return JSONResponse(status_code=401, content={"message": "Token is Expired"})
         

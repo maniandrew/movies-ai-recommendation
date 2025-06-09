@@ -28,7 +28,7 @@ class AuthService:
         payload = {"sub": username, "iat": issued_at , "exp": expire}
         return jwt.encode(payload,self.secret_key,self.algorithm)
     
-    def decode_token(self , token: str):
+    def decode_token(self , token: str) -> Token:
         try:
             payload = jwt.decode(token,self.secret_key, algorithms=self.algorithm)
             return Token(payload=payload)
