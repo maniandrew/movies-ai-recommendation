@@ -20,18 +20,28 @@ def read_image_from_bytes(image_bytes):
     return np.array(image)
 
 
-def authenticate_by_users_face(all_users: list, encoding: list) -> list:
-    encoding = np.array(encoding)  # Ensure encoding is a NumPy array
-
+def authenticate_by_users_face(all_users: list, input_encoding: list, threshold: float = 0.5) -> list:
+    input_encoding = np.array(input_encoding)
+    
+    best_match = None
+    lower_distance = float('inf')
+    
     for user in all_users:
-        known_encoding = np.array(user['face_encodings'])
-        print(known_encoding)
-        # If user['face_encodings'] is a list of multiple encodings
-        if len(known_encoding.shape) == 2:
-            matches = face_recognition.compare_faces(known_encoding, encoding)
-        else:
-            matches = face_recognition.compare_faces([known_encoding], encoding)
-        if np.any(matches):
-            user_data = convert_object_id(user)
-            return user_data
+        user_encodings = np.array(user.get('face_encodings' , []))
+        
+        if user_encodings.ndim == 1:
+            user_encodings = np.array([user_encodings])
+        
+        distances = face_recognition.face_distance(user_encodings , input_encoding)
+        
+        if len(distances) == 0:
+            continue
+        
+        min_distance = np.min(distances)
+        
+        if min_distance < threshold and min_distance < lower_distance:
+            lower_distance = min_distance
+            best_match = user
+    if best_match:
+        return convert_object_id(best_match)
     return None

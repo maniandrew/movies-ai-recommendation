@@ -1,4 +1,4 @@
-from app.core.config import db;
+from app.services.config import db;
 from datetime import datetime
 from uuid import uuid4
 
@@ -35,9 +35,7 @@ async def create_user(encodings: list , name: str):
     
 async def get_user_details() -> list:
     users = await collection.find({'face_encodings': {'$exists': True}}).to_list(length = 10)
-    if not users:
-        return None
-    return users
+    return users or []
     
     
 

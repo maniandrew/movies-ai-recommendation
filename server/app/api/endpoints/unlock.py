@@ -14,5 +14,6 @@ async def face_unlock(file: UploadFile = File(...)):
     return {
         "message": result["message"],
         "user": result["user"],
-        "status_code": result["status_code"]
+        "status_code": result["status_code"],
+        "token": result["token"]
     }

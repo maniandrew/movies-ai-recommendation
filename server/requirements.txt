@@ -25,3 +25,4 @@ motor
 opencv-python
 requests
 fastapi[all]
+python-jose[cryptography]
