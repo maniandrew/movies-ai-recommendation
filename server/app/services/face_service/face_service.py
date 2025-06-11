@@ -1,4 +1,4 @@
-from app.models.users import (
+from app.services.users_service.users import (
     create_user,
     get_user_details
 )
@@ -7,7 +7,7 @@ from app.utils.face_utils import (
     authenticate_by_users_face , 
 )
 
-from app.core.auth import AuthService
+from app.core.auth.auth import AuthService
 
 authService = AuthService()
 

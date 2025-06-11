@@ -1,6 +1,6 @@
 from fastapi import APIRouter , UploadFile , File , Form 
 from fastapi.responses import JSONResponse
-from app.services.face_service import face_lock_validation
+from app.services.face_service.face_service import face_lock_validation
 
 router = APIRouter(prefix="/login" , tags=['Unlock'])
 

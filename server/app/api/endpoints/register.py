@@ -1,6 +1,6 @@
 from fastapi import APIRouter , File , UploadFile, Form
 from fastapi.responses import JSONResponse
-from app.services.face_service import face_unlock_register
+from app.services.face_service.face_service import face_unlock_register
 
 
 router = APIRouter(prefix ="/register" , tags=["Register"])

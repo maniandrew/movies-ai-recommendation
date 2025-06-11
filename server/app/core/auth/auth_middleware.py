@@ -1,6 +1,6 @@
 from starlette.middleware.base import BaseHTTPMiddleware
 from fastapi.responses import JSONResponse
-from app.core.auth import AuthService
+from app.core.auth.auth import AuthService
 
 class AuthMiddleware(BaseHTTPMiddleware):
     def __init__(self, app, exclude_paths: list = None):

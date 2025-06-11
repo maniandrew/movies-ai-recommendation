@@ -1,4 +1,4 @@
-from app.services.config import db;
+from app.core.database.db import db;
 from datetime import datetime
 from uuid import uuid4
 

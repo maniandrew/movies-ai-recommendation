@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.models.users import get_all_users 
+from app.services.users_service.users import get_all_users 
 
 router = APIRouter(prefix="/user" , tags=['Users'])
 
