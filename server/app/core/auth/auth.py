@@ -2,16 +2,9 @@ import os
 from dotenv import load_dotenv
 from datetime import datetime, timedelta , timezone
 from jose import jwt, JWTError , ExpiredSignatureError
-from fastapi.responses import JSONResponse
+from app.interfaces.auth.token import Token
 
 load_dotenv()
-
-class Token:
-    def __init__(self , payload = None , is_expired  = False , is_invalid = False):
-        self.payload = payload
-        self.is_expired = is_expired
-        self.is_invalid = is_invalid
-        
 
 class AuthService:
     def __init__(self):
