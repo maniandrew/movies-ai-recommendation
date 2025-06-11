@@ -26,3 +26,5 @@ opencv-python
 requests
 fastapi[all]
 python-jose[cryptography]
+beanie
+pydantic[email]
