@@ -5,6 +5,7 @@ import certifi
 from beanie import init_beanie
 from app.models.user.user import User
 from app.models.movies.movies import Movies
+from app.models.theaters.theaters import Theaters
 from pymongo.errors import PyMongoError
 
 load_dotenv()
@@ -18,10 +19,11 @@ client = AsyncIOMotorClient(MONGO_URL, tlsCAFile=certifi.where())
         
 db = client[DB_NAME]
 
+models: list[type] = [User , Movies , Theaters]
 
 async def db_connection():
     try:
-        await init_beanie(database=db, document_models=[User , Movies])
+        await init_beanie(database=db, document_models = models)
         print("MongoDB connection established and Beanie initialized.")
     except PyMongoError as e:
         print(f"MongoDB connection error: {e}")
