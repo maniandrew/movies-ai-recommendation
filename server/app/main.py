@@ -17,7 +17,7 @@ origins = [
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(_: FastAPI):
     try:
         await db_connection()
         yield

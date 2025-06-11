@@ -17,7 +17,7 @@ class AuthService:
     
     def create_token(self , username: str) -> str:
         issued_at = datetime.now(timezone.utc)
-        expire = issued_at + timedelta(seconds=self.token_expiry_time)
+        expire = issued_at + timedelta(minutes=self.token_expiry_time)
         payload = {"sub": username, "iat": issued_at , "exp": expire}
         return jwt.encode(payload,self.secret_key,self.algorithm)
     

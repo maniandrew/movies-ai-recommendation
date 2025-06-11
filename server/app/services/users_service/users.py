@@ -1,14 +1,7 @@
-from app.core.database.db import db;
-from datetime import datetime
 from uuid import uuid4
 from app.models.user.user import User
 from datetime import datetime
 from app.interfaces.user.user import UserRole
-
-collection = db['users'] # type: ignore
-
-api_url = "https://randomuser.me/api/?results=500"
-
 
 async def get_all_users() -> list[User]:
    users = await User.find_all().to_list()
