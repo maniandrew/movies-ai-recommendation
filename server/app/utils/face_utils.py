@@ -3,6 +3,7 @@ from PIL import Image;
 import numpy as np;
 import io;
 from app.utils.common_utils import convert_object_id
+from app.models.user.user import User
 
 def extract_face_encoding(img_bytes: bytes):
     try:
@@ -20,14 +21,16 @@ def read_image_from_bytes(image_bytes):
     return np.array(image)
 
 
-def authenticate_by_users_face(all_users: list, input_encoding: list, threshold: float = 0.5) -> list:
+def authenticate_by_users_face(
+    all_users: list[User], input_encoding: list, threshold: float = 0.5
+) -> list:
     input_encoding = np.array(input_encoding)
     
     best_match = None
     lower_distance = float('inf')
     
     for user in all_users:
-        user_encodings = np.array(user.get('face_encodings' , []))
+        user_encodings = np.array(user.face_encodings or [])
         
         if user_encodings.ndim == 1:
             user_encodings = np.array([user_encodings])

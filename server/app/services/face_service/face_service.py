@@ -7,6 +7,8 @@ from app.utils.face_utils import (
     authenticate_by_users_face , 
 )
 
+from app.models.user.user import User
+
 from app.core.auth.auth import AuthService
 
 authService = AuthService()
@@ -26,7 +28,7 @@ async def face_unlock_register(img_bytes: bytes, name: str) -> dict:
     if users is None:
         users = []
     
-    is_duplicated = authenticate_by_users_face(users , encoding)
+    is_duplicated =  authenticate_by_users_face(users , encoding)
     
     if is_duplicated is not None:
         return {'message': 'User already exists', 'status_code': 400}
@@ -40,7 +42,7 @@ async def face_unlock_register(img_bytes: bytes, name: str) -> dict:
 
 
 async def face_lock_validation(img_bytes: bytes) -> dict:
-    all_users = await get_user_details()
+    all_users:list[User] = await get_user_details()
     if not all_users:
         return {
             'message': 'Unauthenticated. No users found. Please register first.',
@@ -54,14 +56,14 @@ async def face_lock_validation(img_bytes: bytes) -> dict:
             'status_code': 400
         }
     # 3. Match face with stored users
-    matched_user = authenticate_by_users_face(all_users, encoding)
+    matched_user: User = authenticate_by_users_face(all_users, encoding)
     if not matched_user:
         return {
             'message': 'Unauthenticated. Face not matched.',
             'status_code': 401
         }
     # 4. Generate JWT token
-    username = matched_user.get("name")
+    username = matched_user.name
     if not username:
         return {
             'message': 'User record invalid. Username missing.',

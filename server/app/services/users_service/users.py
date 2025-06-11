@@ -36,7 +36,7 @@ async def create_user(encodings: list , name: str):
         return False
     
 async def get_user_details() -> list:
-    users = await User.find(User.face_encodings.exists(True)).limit(10).to_list()
+    users = await User.find({"face_encodings": {"$exists": True}}).limit(10).to_list()
     return users or []
     
     
