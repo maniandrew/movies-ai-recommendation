@@ -6,6 +6,7 @@ from beanie import init_beanie
 from app.models.user.user import User
 from app.models.movies.movies import Movies
 from app.models.theaters.theaters import Theaters
+from app.models.screenings.screenings import Screenings
 from pymongo.errors import PyMongoError
 
 load_dotenv()
@@ -19,7 +20,7 @@ client = AsyncIOMotorClient(MONGO_URL, tlsCAFile=certifi.where())
         
 db = client[DB_NAME]
 
-models: list[type] = [User , Movies , Theaters]
+models: list[type] = [User , Movies , Theaters , Screenings]
 
 async def db_connection():
     try:
