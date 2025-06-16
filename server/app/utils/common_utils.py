@@ -1,7 +1,8 @@
 from bson import ObjectId
 from fastapi import Request, HTTPException , status
 from app.models.user.user import User
-from app.services.users_service.users import get_user
+from app.services.users_service.users import get_user , UserRole
+from typing import Optional
 
 
 
@@ -25,3 +26,16 @@ async def get_user_config(request: Request) -> User:
             detail = {"user details not found"}
         )
     return user_config
+
+
+def router_activator(roles: list[int]) -> Optional[User]:
+    async def dependency(request: Request):
+        user: User = await get_user_config(request)
+        if user.role not in roles:
+            raise HTTPException(
+                status_code=403,
+                detail={"message": "User does not have permission", "code": 403}
+            )
+        return user
+    return dependency
+    

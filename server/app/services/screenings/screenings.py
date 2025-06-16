@@ -112,4 +112,15 @@ async def create_screenings(data: ScreeningRequestParams, user: User) -> None:
         return {"message": "Unexpected error occurs while scree creation" , "code": 500}
     
     
+async def get_screenings() -> Optional[Screenings]:
+    try:
+        screenings = await Screenings.find_all().to_list()
+        if not screenings:
+            return {"message": "Screenings not found" , "code" : 200}
+        return {"message":"Screenings fetched Successfully" ,"data": screenings , "code": 200}
+    except Exception as e:
+        raise HTTPException(
+            status_code = 500,
+            detail = {"message": "Unexpected error occurs while fetching the screen details"}
+        )
 
