@@ -1,6 +1,6 @@
 from app.services.users_service.users import (
     create_user,
-    get_user_details
+    get_all_user_details
 )
 from app.utils.face_utils import (
     extract_face_encoding ,
@@ -23,7 +23,7 @@ async def face_unlock_register(img_bytes: bytes, name: str) -> dict:
     if encoding is None:
         return {'message': 'We are not able to recognize your face', 'status_code': 400}
     
-    users = await get_user_details()
+    users = await get_all_user_details()
     
     if users is None:
         users = []
@@ -42,7 +42,7 @@ async def face_unlock_register(img_bytes: bytes, name: str) -> dict:
 
 
 async def face_lock_validation(img_bytes: bytes) -> dict:
-    all_users:list[User] = await get_user_details()
+    all_users:list[User] = await get_all_user_details()
     if not all_users:
         return {
             'message': 'Unauthenticated. No users found. Please register first.',
@@ -63,18 +63,18 @@ async def face_lock_validation(img_bytes: bytes) -> dict:
             'status_code': 401
         }
     # 4. Generate JWT token
-    username = matched_user.name
-    if not username:
+    user = matched_user
+    if not user:
         return {
-            'message': 'User record invalid. Username missing.',
+            'message': 'User record invalid. user missing.',
             'status_code': 500
         }
     
-    token = authService.create_token(username)
+    token = authService.create_token(user)
 
     return {
         'message': 'Successfully Authenticated',
         'status_code': 200,
-        'user': username,
+        'user': user,
         'token': token
     }

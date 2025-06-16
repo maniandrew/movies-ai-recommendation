@@ -29,6 +29,5 @@ class AuthMiddleware(BaseHTTPMiddleware):
             return JSONResponse(status_code=401, content={"message": "Token is Invalid"})
         
         request.state.user = tokenDetails.payload.get("sub")
-        
         response = await call_next(request)
         return response

@@ -2,6 +2,8 @@ from uuid import uuid4
 from app.models.user.user import User
 from datetime import datetime
 from app.interfaces.user.user import UserRole
+from typing import Optional
+from bson import ObjectId
 
 async def get_all_users() -> list[User]:
    users = await User.find_all().to_list()
@@ -28,9 +30,17 @@ async def create_user(encodings: list , name: str):
         print(e)
         return False
     
-async def get_user_details() -> list:
+async def get_all_user_details() -> list:
     users = await User.find({"face_encodings": {"$exists": True}}).limit(10).to_list()
     return users or []
+
+
+async def get_user(user_id: str) -> Optional[User]:
+    try:
+        user = await User.find_one({"_id": ObjectId(user_id)})
+        return user
+    except:
+        return None
     
     
 

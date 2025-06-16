@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from datetime import datetime, timedelta , timezone
 from jose import jwt, JWTError , ExpiredSignatureError
 from app.interfaces.auth.token import Token
+from app.models.user.user import User
 
 load_dotenv()
 
@@ -15,10 +16,15 @@ class AuthService:
             raise ValueError("SECRET_KEY is missing. Please set it in your environment or .env file.")
        
     
-    def create_token(self , username: str) -> str:
+    def create_token(self , user: User) -> str:
         issued_at = datetime.now(timezone.utc)
         expire = issued_at + timedelta(minutes=self.token_expiry_time)
-        payload = {"sub": username, "iat": issued_at , "exp": expire}
+        payload = {
+         "sub": str(user.id),              
+         "username": user.name,        
+         "iat": issued_at.timestamp(),    
+         "exp": expire.timestamp()         
+        }
         return jwt.encode(payload,self.secret_key,self.algorithm)
     
     def decode_token(self , token: str) -> Token:
